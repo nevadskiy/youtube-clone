@@ -1,3 +1,11 @@
+###
+
+- fix networks binding
+- fix .env.example config URL with nginx according to expose port
+
+
+
+
 ##### For using aliases, apply source bash file
 ```
 source aliases.sh
