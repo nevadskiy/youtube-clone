@@ -104,16 +104,6 @@ services:
     networks:
       - internal
 
-  ### Node ###############################
-  node:
-    build:
-      context: docker/node
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/var/www
-    # Do not down CLI after run
-    tty: true
-
   ### Supervisor ###################
   supervisor:
     build:
@@ -131,6 +121,8 @@ services:
       - mysql
       - redis
       - mailhog
+    networks:
+      - internal
 
   ### Mailhog (For mail testing) ####
   mailhog:
@@ -142,6 +134,18 @@ services:
       - 1026:1025
       # Inbox web page
       - 8026:8025
+    networks:
+      - internal
+
+  ### Node ###############################
+  node:
+    build:
+      context: docker/node
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www
+    # Do not down CLI after run
+    tty: true
 
 volumes:
   mysql:
