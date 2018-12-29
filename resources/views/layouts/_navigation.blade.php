@@ -32,9 +32,8 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('channel.show', $channel) }}">Your channel</a>
-                            {{--<a class="dropdown-item" href="{{ route('logout') }}">Chanel settings</a>--}}
-
+                            <a class="dropdown-item" href="{{ route('channels.show', $channel) }}">Your channel</a>
+                            <a class="dropdown-item" href="{{ route('channels.edit', $channel) }}">Chanel settings</a>
 
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
