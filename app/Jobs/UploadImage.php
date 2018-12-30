@@ -10,8 +10,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class UploadImage implements ShouldQueue
 {
@@ -46,26 +46,69 @@ class UploadImage implements ShouldQueue
      */
     public function handle()
     {
-        $path = $this->onTempFile(function ($path) {
-            return Storage::disk('s3')->put('profile', new File($path));
-        });
+        $tempFilePath = $this->getTempImagePath();
 
-        $this->channel->image = $path;
-        $this->channel->save();
+        $this->resizeImage($tempFilePath);
+
+        $path = $this->uploadImage($tempFilePath);
+
+        $this->removeTempImage();
+
+        $this->updateChannelImage($path);
     }
 
-    private function onTempFile(Closure $callback)
+    /**
+     * Get real path of temp file
+     *
+     * @return string
+     */
+    protected function getTempImagePath()
     {
-        // Get real path of temp file
-        $tempFilePath = Storage::disk('local')->path($this->filename);
+        return Storage::disk('local')->path($this->filename);
+    }
 
-        // Run callback with path
-        $result = $callback($tempFilePath);
+    /**
+     * Resize image
+     *
+     * @param $tempFilePath
+     */
+    protected function resizeImage($tempFilePath): void
+    {
+        Image::make($tempFilePath)
+            ->encode('png')
+            ->fit(40, 40, function ($c) {
+                $c->upsize();
+            })
+            ->save();
+    }
 
-        // Remove temp file
+    /**
+     * Upload to s3
+     *
+     * @param $tempFilePath
+     * @return string|bool
+     */
+    protected function uploadImage($tempFilePath)
+    {
+        return Storage::disk('s3')->put('profile', new File($tempFilePath));
+    }
+
+    /**
+     * Remove temp file
+     */
+    protected function removeTempImage(): void
+    {
         Storage::disk('local')->delete($this->filename);
+    }
 
-        // Return callback result
-        return $result;
+    /**
+     * Update channel image url
+     *
+     * @param bool $path
+     */
+    protected function updateChannelImage(bool $path): void
+    {
+        $this->channel->image = $path;
+        $this->channel->save();
     }
 }

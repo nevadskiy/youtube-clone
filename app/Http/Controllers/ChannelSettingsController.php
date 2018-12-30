@@ -34,6 +34,8 @@ class ChannelSettingsController extends Controller
             $this->dispatch(new UploadImage($channel, $filename));
         }
 
+        // $image->
+
         return redirect()->route('channels.edit', $channel);
     }
 }
