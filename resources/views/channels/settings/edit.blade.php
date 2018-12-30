@@ -8,7 +8,7 @@
                     <div class="card-header">Channel settings</div>
 
                     <div class="card-body">
-                        <form action="{{ route('channels.update', $channel) }}" method="POST">
+                        <form action="{{ route('channels.update', $channel) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -21,8 +21,8 @@
 
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('name') }}</strong>
-                                </span>
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
                                 @endif
                             </div>
 
@@ -58,6 +58,18 @@
                                         <strong>{{ $errors->first('description') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label for="image" class="col-form-label">{{ __('Channel image') }}</label>
+
+                                <input type="file" name="image" id="image">
+
+                                {{--@if ($errors->has('image'))--}}
+                                    {{--<span class="invalid-feedback" role="alert">--}}
+                                        {{--<strong>{{ $errors->first('image') }}</strong>--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
                             </div>
 
                             <button type="submit" class="btn btn-primary">Save</button>
