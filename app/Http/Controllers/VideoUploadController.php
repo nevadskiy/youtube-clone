@@ -10,4 +10,12 @@ class VideoUploadController extends Controller
     {
         return view('video.upload');
     }
+
+    public function store(Request $request)
+    {
+        // grab user channel
+        // lookup the video
+        // move to temp location
+        // upload to s3 (job)
+    }
 }

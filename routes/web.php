@@ -14,6 +14,9 @@ Route::get('/channel/{channel}', 'ChannelController@show')->name('channels.show'
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/upload', 'VideoUploadController@index')->name('video.upload');
 
+    Route::post('/videos', 'VideoController@store')->name('video.store');
+    Route::put('/videos/{video}', 'VideoController@update')->name('video.update');
+
     Route::get('/channel/{channel}/edit', 'ChannelSettingsController@edit')->name('channels.edit');
     Route::put('/channel/{channel}', 'ChannelSettingsController@update')->name('channels.update');
 });
