@@ -1900,7 +1900,22 @@ __webpack_require__.r(__webpack_exports__);
       }).catch(function () {
         _this3.saveStatus = 'Failed to save changes';
       });
+    },
+    attachBrowserExitWarning: function attachBrowserExitWarning() {
+      var _this4 = this;
+
+      window.onbeforeunload = function () {
+        if (_this4.uploadProcess()) {
+          return 'Are you sure you want to navigate away?';
+        }
+      };
+    },
+    uploadProcess: function uploadProcess() {
+      return this.uploading && !this.uploadComplete && !this.failed;
     }
+  },
+  mounted: function mounted() {
+    this.attachBrowserExitWarning();
   }
 });
 

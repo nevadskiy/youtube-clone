@@ -144,7 +144,23 @@
         }).catch(() => {
           this.saveStatus = 'Failed to save changes';
         });
-      }
+      },
+
+      attachBrowserExitWarning() {
+        window.onbeforeunload = () => {
+          if (this.uploadProcess()) {
+            return 'Are you sure you want to navigate away?';
+          }
+        }
+      },
+
+      uploadProcess() {
+        return this.uploading && !this.uploadComplete && !this.failed;
+      },
+    },
+
+    mounted() {
+      this.attachBrowserExitWarning();
     },
   };
 </script>
