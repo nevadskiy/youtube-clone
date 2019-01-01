@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\UploadVideo;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class VideoUploadController extends Controller
 {
@@ -13,9 +15,14 @@ class VideoUploadController extends Controller
 
     public function store(Request $request)
     {
-        // grab user channel
-        // lookup the video
-        // move to temp location
-        // upload to s3 (job)
+        $channel = $request->user()->channel()->first();
+
+        $video = $channel->videos()->where('uid', $request->get('uid'))->firstOrFail();
+
+        $request->file('video')->storeAs('uploads/videos', $video->video_filename, 'local');
+
+        $this->dispatch(new UploadVideo($video->video_filename));
+
+        return $this->successJson();
     }
 }

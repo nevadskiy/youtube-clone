@@ -16,7 +16,21 @@
                                 @change="fileInputChange"
                         >
 
+                        <div class="alert alert-danger" v-if="failed">Something went wrong. Please try again.</div>
+
                         <div id="video-form" v-if="uploading && !failed">
+                            <div class="alert alert-info" v-if="!uploadComplete">
+                                Your will be available at <a :href="videoUrl" v-text="videoUrl"></a>
+                            </div>
+                            <div class="alert alert-success" v-if="uploadComplete">
+                                Upload complete. Video is now processing. <a href="/videos">Go to your videos</a>
+                            </div>
+
+                            <div class="progress" v-if="!uploadComplete">
+                                <div class="progress-bar" role="progressbar"
+                                     :style="{width: uploadProgress + '%'}"></div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" id="title" class="form-control" v-model="title">
@@ -51,15 +65,26 @@
     data() {
       return {
         uid: null,
+
+        file: null,
         uploading: false,
         uploadComplete: false,
-        failed: false,
+        uploadProgress: 0,
+
         title: 'Untitled',
-        file: null,
-        description: null,
+        description: '',
         visibility: 'private',
+
         saveStatus: null,
+
+        failed: false,
       }
+    },
+
+    computed: {
+      videoUrl() {
+        return this.$root.url + '/videos/' + this.uid;
+      },
     },
 
     methods: {
@@ -69,10 +94,27 @@
         this.file = document.getElementById('video').files[0];
 
         this.store().then(() => {
-          // upload the video
+          const form = new FormData();
+
+          form.append('video', this.file);
+          form.append('uid', this.uid);
+
+          axios.post('/upload', form, {
+            onUploadProgress: event => this.updateUploadProgress(event),
+          }).then(() => {
+            this.uploadComplete = true;
+          }).catch(() => {
+            this.failed = true;
+          });
+        }).catch(() => {
+          this.failed = true;
         })
         // store meta data
         // upload video
+      },
+
+      updateUploadProgress(event) {
+        this.uploadProgress = Math.round(event.loaded * 100 / event.total);
       },
 
       store() {

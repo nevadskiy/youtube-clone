@@ -43,7 +43,7 @@ class VideoController extends Controller
         ]);
 
         if ($request->expectsJson()) {
-            return response([], Response::HTTP_OK);
+            return $this->successJson();
         }
 
         return redirect()->back();

@@ -1811,30 +1811,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       uid: null,
+      file: null,
       uploading: false,
       uploadComplete: false,
-      failed: false,
+      uploadProgress: 0,
       title: 'Untitled',
-      file: null,
-      description: null,
+      description: '',
       visibility: 'private',
-      saveStatus: null
+      saveStatus: null,
+      failed: false
     };
+  },
+  computed: {
+    videoUrl: function videoUrl() {
+      return this.$root.url + '/videos/' + this.uid;
+    }
   },
   methods: {
     fileInputChange: function fileInputChange() {
+      var _this = this;
+
       this.uploading = true;
       this.file = document.getElementById('video').files[0];
-      this.store().then(function () {// upload the video
+      this.store().then(function () {
+        var form = new FormData();
+        form.append('video', _this.file);
+        form.append('uid', _this.uid);
+        axios.post('/upload', form, {
+          onUploadProgress: function onUploadProgress(event) {
+            return _this.updateUploadProgress(event);
+          }
+        }).then(function () {
+          _this.uploadComplete = true;
+        }).catch(function () {
+          _this.failed = true;
+        });
+      }).catch(function () {
+        _this.failed = true;
       }); // store meta data
       // upload video
     },
+    updateUploadProgress: function updateUploadProgress(event) {
+      this.uploadProgress = Math.round(event.loaded * 100 / event.total);
+    },
     store: function store() {
-      var _this = this;
+      var _this2 = this;
 
       return axios.post('/videos', {
         title: this.title,
@@ -1842,11 +1881,11 @@ __webpack_require__.r(__webpack_exports__);
         visibility: this.visibility,
         extension: this.file.name.split('.').pop()
       }).then(function (response) {
-        _this.uid = response.data.data.uid;
+        _this2.uid = response.data.data.uid;
       });
     },
     update: function update() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.saveStatus = 'Saving changes';
       return axios.put("/videos/".concat(this.uid), {
@@ -1854,12 +1893,12 @@ __webpack_require__.r(__webpack_exports__);
         description: this.description,
         visibility: this.visibility
       }).then(function () {
-        _this2.saveStatus = 'Changes saved';
+        _this3.saveStatus = 'Changes saved';
         setTimeout(function () {
-          _this2.saveStatus = null;
+          _this3.saveStatus = null;
         }, 3000);
       }).catch(function () {
-        _this2.saveStatus = 'Failed to save changes';
+        _this3.saveStatus = 'Failed to save changes';
       });
     }
   }
@@ -36729,8 +36768,47 @@ var render = function() {
                 })
               : _vm._e(),
             _vm._v(" "),
+            _vm.failed
+              ? _c("div", { staticClass: "alert alert-danger" }, [
+                  _vm._v("Something went wrong. Please try again.")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _vm.uploading && !_vm.failed
               ? _c("div", { attrs: { id: "video-form" } }, [
+                  !_vm.uploadComplete
+                    ? _c("div", { staticClass: "alert alert-info" }, [
+                        _vm._v(
+                          "\n                            Your will be available at "
+                        ),
+                        _c("a", {
+                          attrs: { href: _vm.videoUrl },
+                          domProps: { textContent: _vm._s(_vm.videoUrl) }
+                        })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.uploadComplete
+                    ? _c("div", { staticClass: "alert alert-success" }, [
+                        _vm._v(
+                          "\n                            Upload complete. Video is now processing. "
+                        ),
+                        _c("a", { attrs: { href: "/videos" } }, [
+                          _vm._v("Go to your videos")
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.uploadComplete
+                    ? _c("div", { staticClass: "progress" }, [
+                        _c("div", {
+                          staticClass: "progress-bar",
+                          style: { width: _vm.uploadProgress + "%" },
+                          attrs: { role: "progressbar" }
+                        })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
                     _vm._v(" "),
@@ -48141,7 +48219,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.component('video-upload', __webpack_require__(/*! ./components/VideoUpload.vue */ "./resources/js/components/VideoUpload.vue").default);
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: window.app
 });
 
 /***/ }),

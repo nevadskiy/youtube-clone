@@ -18,14 +18,24 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+      window.app = {
+        url: '{{ config('app.url') }}',
+        user: {
+          id: {{ Auth::check() ? Auth::user()->id : null }},
+          auth: {{ var_export(Auth::check()) }},
+        },
+      };
+    </script>
 </head>
 <body>
-    <div id="app">
-        @include('layouts._navigation')
+<div id="app">
+    @include('layouts._navigation')
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
+    <main class="py-4">
+        @yield('content')
+    </main>
+</div>
 </body>
 </html>

@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Channel;
-use Closure;
 use Illuminate\Bus\Queueable;
 use Illuminate\Http\File;
 use Illuminate\Queue\SerializesModels;
@@ -51,6 +50,8 @@ class UploadImage implements ShouldQueue
         $this->resizeImage($tempFilePath);
 
         $path = $this->uploadImage($tempFilePath);
+
+        info($path);
 
         $this->removeTempImage();
 
