@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\UploadVideo;
+use App\Jobs\ProcessVideo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,7 +21,7 @@ class VideoUploadController extends Controller
 
         $request->file('video')->storeAs('uploads/videos', $video->video_filename, 'local');
 
-        $this->dispatch(new UploadVideo($video->video_filename));
+        $this->dispatch(new ProcessVideo($video));
 
         return $this->successJson();
     }

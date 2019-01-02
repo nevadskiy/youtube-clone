@@ -36,6 +36,9 @@ RUN docker-php-ext-install bcmath
 # MySQL
 RUN docker-php-ext-install pdo pdo_mysql
 
+# FFmpeg (video processing)
+RUN apt-get install -y ffmpeg libav-tools
+
 # Crontab
 RUN apt-get update && apt-get install -y cron
 COPY cron.d/schedule /etc/cron.d

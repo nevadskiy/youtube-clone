@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Encoders\FFmpegVideoEncoder;
+use App\Encoders\VideoEncoder;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        app()->bind(VideoEncoder::class, function () {
+            return new FFmpegVideoEncoder(resolve('log'));
+        });
     }
 }

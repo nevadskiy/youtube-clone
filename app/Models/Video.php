@@ -31,4 +31,14 @@ class Video extends Model
     {
         return 'uid';
     }
+
+    public function processed()
+    {
+        $this->update(['processed' => true]);
+    }
+
+    public function progress(int $percentage)
+    {
+        $this->update(['processed_percentage' => $percentage]);
+    }
 }
