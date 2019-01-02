@@ -11,4 +11,6 @@ interface VideoEncoder
     public function onProgress(Closure $callback);
 
     public function onFinish(Closure $callback);
+
+    public function saveThumbnail(string $videoPath, string $thumbnailPath);
 }

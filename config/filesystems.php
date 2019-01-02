@@ -58,7 +58,7 @@ return [
         's3' => [
             'driver' => 'local',
             'root' => storage_path('app/public/s3'),
-            'url' => env('APP_URL').'/s3',
+            'url' => env('APP_URL').'/storage/s3',
             'visibility' => 'public',
         ],
 

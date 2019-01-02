@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Video extends Model
 {
@@ -40,5 +41,19 @@ class Video extends Model
     public function progress(int $percentage)
     {
         $this->update(['processed_percentage' => $percentage]);
+    }
+
+    public function getThumbnailUrlAttribute()
+    {
+        if (!$this->isProcessed()) {
+            return asset('img/default-thumb.jpg');
+        }
+
+        return Storage::disk('s3')->url("videos/{$this->uid}.jpg");
+    }
+
+    public function isProcessed()
+    {
+        return $this->processed;
     }
 }

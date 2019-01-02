@@ -27,7 +27,7 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('video-upload.index') }}">{{ __('Upload') }}</a>
+                        <a class="nav-link" href="{{ route('videos-upload.index') }}">{{ __('Upload') }}</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -35,6 +35,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('videos.index') }}">Your videos</a>
                             <a class="dropdown-item" href="{{ route('channels.show', $channel) }}">Your channel</a>
                             <a class="dropdown-item" href="{{ route('channels.edit', $channel) }}">Chanel settings</a>
 

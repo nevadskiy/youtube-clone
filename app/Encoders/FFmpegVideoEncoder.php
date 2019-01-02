@@ -46,6 +46,19 @@ class FFmpegVideoEncoder implements VideoEncoder
         $this->onFinishCallback = $callback;
     }
 
+    public function saveThumbnail(string $videoPath, string $thumbnailPath)
+    {
+        $file = $this->ffmpeg->open($videoPath);
+
+        $ffprobe = \FFMpeg\FFProbe::create();
+
+        $duration = $ffprobe->format($videoPath)->get('duration');
+
+        $halfDurationTimecode = \FFMpeg\Coordinate\TimeCode::fromSeconds($duration / 2);
+
+        $file->frame($halfDurationTimecode)->save($thumbnailPath);
+    }
+
     /**
      * @return X264
      */

@@ -28,8 +28,9 @@ class VideoProcessService
      * @param Video $video
      * @param string $originalPath
      * @param string $encodePath
+     * @param string $thumbnailPath
      */
-    public function process(Video $video, string $originalPath, string $encodePath)
+    public function process(Video $video, string $originalPath, string $encodePath, string $thumbnailPath)
     {
         $this->encoder->onProgress(function ($percentage) use ($video) {
             event(new EncodeProgressChanged($video, $percentage));
@@ -40,5 +41,7 @@ class VideoProcessService
         });
 
         $this->encoder->encode($originalPath, $encodePath);
+
+        $this->encoder->saveThumbnail($encodePath, $thumbnailPath);
     }
 }

@@ -43,13 +43,17 @@ class ProcessVideo implements ShouldQueue
 
         $encodeVideoPath = Storage::disk('local')->path($this->getEncodeLocation());
 
-        $service->process($this->video, $originalVideoPath, $encodeVideoPath);
+        $service->process($this->video, $originalVideoPath, $encodeVideoPath, $this->getThumbnailPath());
 
         $this->removeOriginalVideo();
 
         $this->uploadEncodedVideo($encodeVideoPath);
 
+        $this->uploadThumbnail($this->getThumbnailPath());
+
         $this->removeEncodedVideo();
+
+        $this->removeLocalThumbnail();
     }
 
     /**
@@ -90,5 +94,28 @@ class ProcessVideo implements ShouldQueue
     private function getEncodeLocation(): string
     {
         return "processed/{$this->video->video_filename}";
+    }
+
+    private function getThumbnailPath()
+    {
+        return Storage::disk('local')->path($this->getThumbnailLocation());
+    }
+
+    /**
+     * @return string
+     */
+    private function getThumbnailLocation(): string
+    {
+        return "processed/{$this->video->uid}.jpg";
+    }
+
+    private function uploadThumbnail($thumbnailPath)
+    {
+        Storage::disk('s3')->putFileAs('videos', new File($thumbnailPath), "{$this->video->uid}.jpg");
+    }
+
+    private function removeLocalThumbnail()
+    {
+        Storage::disk('local')->delete($this->getThumbnailLocation());
     }
 }
