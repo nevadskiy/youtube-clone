@@ -15,6 +15,32 @@ class VideoController extends Controller
         return view('video.index', compact('videos'));
     }
 
+    public function edit(Video $video)
+    {
+        $this->authorize('edit', $video);
+
+        return view('video.edit', compact('video'));
+    }
+
+    public function update(VideoUpdateRequest $request, Video $video)
+    {
+        $this->authorize('update', $video);
+
+        $video->update([
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+            'visibility' => $request->get('visibility'),
+            'allow_votes' => !!$request->get('allow_votes'),
+            'allow_comments' => !!$request->get('allow_comments'),
+        ]);
+
+        if ($request->expectsJson()) {
+            return $this->successJson();
+        }
+
+        return redirect()->back();
+    }
+
     public function store(Request $request)
     {
         $uid = uniqid(true);
@@ -34,24 +60,5 @@ class VideoController extends Controller
                 'uid' => $uid,
             ],
         ]);
-    }
-
-    public function update(VideoUpdateRequest $request, Video $video)
-    {
-        $this->authorize('update', $video);
-
-        $video->update([
-            'title' => $request->get('title'),
-            'description' => $request->get('description'),
-            'visibility' => $request->get('visibility'),
-            'allow_votes' => $request->has('allow_votes'),
-            'allow_comments' => $request->has('allow_comments'),
-        ]);
-
-        if ($request->expectsJson()) {
-            return $this->successJson();
-        }
-
-        return redirect()->back();
     }
 }

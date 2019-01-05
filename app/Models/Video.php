@@ -43,6 +43,16 @@ class Video extends Model
         $this->update(['processed_percentage' => $percentage]);
     }
 
+    public function isVotesAllowed(): bool
+    {
+        return !!$this->allow_votes;
+    }
+
+    public function isCommentsAllowed(): bool
+    {
+        return !!$this->allow_comments;
+    }
+
     public function getThumbnailUrlAttribute()
     {
         if (!$this->isProcessed()) {
