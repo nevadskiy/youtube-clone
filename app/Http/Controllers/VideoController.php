@@ -61,4 +61,11 @@ class VideoController extends Controller
             ],
         ]);
     }
+
+    public function destroy(Request $request, Video $video)
+    {
+        $this->authorize('delete', $video);
+
+        return redirect()->back();
+    }
 }

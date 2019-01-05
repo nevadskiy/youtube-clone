@@ -29,4 +29,14 @@ class VideoPolicy
     {
         return $user->id === $video->channel->user_id;
     }
+
+    /**
+     * @param User $user
+     * @param Video $video
+     * @return bool
+     */
+    public function delete(User $user, Video $video): bool
+    {
+        return $user->id === $video->channel->user_id;
+    }
 }
