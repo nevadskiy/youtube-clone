@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Channel extends Model
 {
@@ -30,10 +31,10 @@ class Channel extends Model
 
     public function getImage()
     {
-//        if (!$this->image) {
+        if (!$this->image) {
             return asset('img/default-avatar.jpg');
-//        }
+        }
 
-//        return $this->image;
+        return Storage::disk('s3')->url($this->image);
     }
 }

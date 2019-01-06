@@ -105,9 +105,9 @@ class UploadImage implements ShouldQueue
     /**
      * Update channel image url
      *
-     * @param bool $path
+     * @param string $path
      */
-    protected function updateChannelImage(bool $path): void
+    protected function updateChannelImage(string $path)
     {
         $this->channel->image = $path;
         $this->channel->save();
