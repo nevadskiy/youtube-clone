@@ -53,6 +53,10 @@
       },
 
       vote(type) {
+        if (!this.canVote) {
+          return;
+        }
+
         if (this.userVote === type) {
           this[type]--;
           this.userVote = null;

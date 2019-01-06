@@ -2709,6 +2709,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     vote: function vote(type) {
+      if (!this.canVote) {
+        return;
+      }
+
       if (this.userVote === type) {
         this[type]--;
         this.userVote = null;

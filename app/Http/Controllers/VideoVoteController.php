@@ -6,6 +6,7 @@ use App\Http\Requests\CreateVoteRequest;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class VideoVoteController extends Controller
 {
@@ -14,7 +15,7 @@ class VideoVoteController extends Controller
         $response = [
             'up' => null,
             'down' => null,
-            'can_vote' => $video->isVotesAllowed(),
+            'can_vote' => $video->isVotesAllowed() && Auth::check(),
             'user_vote' => null,
         ];
 

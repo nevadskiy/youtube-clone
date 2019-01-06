@@ -23,7 +23,7 @@
       window.app = {
         url: '{{ config('app.url') }}',
         user: {
-          id: {{ Auth::check() ? Auth::user()->id : null }},
+          id: {{ Auth::check() ? Auth::user()->id : 'null' }},
           auth: {{ var_export(Auth::check()) }},
         },
       };
