@@ -72,7 +72,7 @@ class Video extends Model
         return $this->processed;
     }
 
-    public function isOwnedByUser(User $user)
+    public function isOwnedByUser(User $user): bool
     {
         return $this->channel->user_id === $user->id;
     }
@@ -88,5 +88,10 @@ class Video extends Model
         }
 
         return true;
+    }
+
+    public function getStreamUrl(): string
+    {
+        return Storage::disk('s3')->url("videos/{$this->video_filename}");
     }
 }
