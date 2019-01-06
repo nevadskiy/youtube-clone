@@ -1,0 +1,16 @@
+.video-placeholder {
+  display: flex;
+  position: relative;
+  background-color: #111111;
+  padding-top: 56.25%;
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+
+  &__header {
+    position: absolute;
+    top: 50%;
+    color: #8a8a8a;
+    transform: translateY(-50%);
+  }
+}

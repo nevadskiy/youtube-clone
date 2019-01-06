@@ -53,6 +53,11 @@ class Video extends Model
         return !!$this->allow_comments;
     }
 
+    public function isPrivate(): bool
+    {
+        return $this->visibility === 'private';
+    }
+
     public function getThumbnailUrlAttribute()
     {
         if (!$this->isProcessed()) {
@@ -65,5 +70,23 @@ class Video extends Model
     public function isProcessed()
     {
         return $this->processed;
+    }
+
+    public function isOwnedByUser(User $user)
+    {
+        return $this->channel->user_id === $user->id;
+    }
+
+    public function canBeAccessed(?User $user): bool
+    {
+        if (!$user && $this->isPrivate()) {
+            return false;
+        }
+
+        if ($user && $this->isPrivate() && !$this->isOwnedByUser($user)) {
+            return false;
+        }
+
+        return true;
     }
 }

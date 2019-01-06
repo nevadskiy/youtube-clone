@@ -5,8 +5,25 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
 
-            player
+            @if ($video->isPrivate() && Auth::check() && $video->isOwnedByUser(Auth::user()))
+                <div class="alert alert-info" role="alert">
+                    Your video is currently private. You you can see it.
+                </div>
+            @endif
 
+            @if ($video->isProcessed() && $video->canBeAccessed(Auth::user()))
+                Show video player
+            @endif
+
+            @if (!$video->isProcessed())
+                <div class="video-placeholder">
+                    <div class="video-placeholder__header">The video is processing. Come back a bit later.</div>
+                </div>
+            @elseif (!$video->canBeAccessed(Auth::user()))
+                <div class="video-placeholder">
+                    <div class="video-placeholder__header">The video is private.</div>
+                </div>
+            @endif
 
             <div class="card mb-2">
                 <div class="card-body">

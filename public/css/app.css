@@ -10490,6 +10490,24 @@ a.text-dark:focus {
   }
 }
 
+.video-placeholder {
+  display: flex;
+  position: relative;
+  background-color: #111111;
+  padding-top: 56.25%;
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.video-placeholder__header {
+  position: absolute;
+  top: 50%;
+  color: #8a8a8a;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
