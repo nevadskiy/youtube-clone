@@ -33,7 +33,9 @@
                 <div class="card-body">
                     <div class="d-flex mb-2">
                         <h4 class="mb-0">{{ $video->title }}</h4>
-                        <div class="ml-auto">views</div>
+                        <div class="ml-auto">
+                            {{ $video->viewCount() }} {{ str_plural('view', $video->viewCount()) }}
+                        </div>
                     </div>
                     <div class="media">
                         <a href="{{ route('channels.show', $video->channel) }}">

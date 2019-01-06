@@ -2448,11 +2448,35 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      player: null
+      player: null,
+      duration: 0
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.player = Object(video_js__WEBPACK_IMPORTED_MODULE_0__["default"])('video');
+    this.player.on('loadedmetadata', function () {
+      _this.duration = Math.round(_this.player.duration());
+    });
+    setInterval(function () {
+      if (_this.hasHitQuotaView()) {
+        _this.createView();
+      }
+    }, 1000);
+  },
+  methods: {
+    // TODO: refactor it with a played() method (for case if user skip forward time hit point)
+    hasHitQuotaView: function hasHitQuotaView() {
+      if (!this.duration) {
+        return false;
+      }
+
+      return Math.round(this.player.currentTime()) === Math.round(10 * this.duration / 100);
+    },
+    createView: function createView() {
+      axios.post("/videos/".concat(this.videoUid, "/views"));
+    }
   }
 });
 

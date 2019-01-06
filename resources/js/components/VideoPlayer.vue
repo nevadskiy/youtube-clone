@@ -33,11 +33,37 @@
     data() {
       return {
         player: null,
+        duration: 0,
       }
     },
 
     mounted() {
       this.player = videojs('video');
+
+      this.player.on('loadedmetadata', () => {
+        this.duration = Math.round(this.player.duration());
+      });
+
+      setInterval(() => {
+        if (this.hasHitQuotaView()) {
+          this.createView();
+        }
+      }, 1000)
+    },
+
+    methods: {
+      // TODO: refactor it with a played() method (for case if user skip forward time hit point)
+      hasHitQuotaView() {
+        if (!this.duration) {
+          return false;
+        }
+
+        return Math.round(this.player.currentTime()) === Math.round((10 * this.duration) / 100);
+      },
+
+      createView() {
+        axios.post(`/videos/${this.videoUid}/views`)
+      }
     }
   }
 </script>

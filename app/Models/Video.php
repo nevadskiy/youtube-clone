@@ -94,4 +94,14 @@ class Video extends Model
     {
         return Storage::disk('s3')->url("videos/{$this->video_filename}");
     }
+
+    public function views()
+    {
+        return $this->hasMany(VideoView::class);
+    }
+
+    public function viewCount()
+    {
+        return $this->views->count();
+    }
 }
