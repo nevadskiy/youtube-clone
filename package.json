@@ -22,5 +22,9 @@
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17",
         "vue-template-compiler": "^2.5.21"
+    },
+    "dependencies": {
+        "video.js": "^7.4.1",
+        "videojs": "^1.0.0"
     }
 }
