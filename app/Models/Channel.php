@@ -27,4 +27,13 @@ class Channel extends Model
     {
         return $this->hasMany(Video::class);
     }
+
+    public function getImage()
+    {
+//        if (!$this->image) {
+            return asset('img/default-avatar.jpg');
+//        }
+
+//        return $this->image;
+    }
 }

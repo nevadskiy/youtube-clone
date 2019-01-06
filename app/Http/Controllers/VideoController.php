@@ -15,6 +15,11 @@ class VideoController extends Controller
         return view('video.index', compact('videos'));
     }
 
+    public function show(Video $video)
+    {
+        return view('video.show', compact('video'));
+    }
+
     public function edit(Video $video)
     {
         $this->authorize('edit', $video);
@@ -47,7 +52,7 @@ class VideoController extends Controller
 
         $channel = $request->user()->channel()->first();
 
-        $video = $channel->videos()->create([
+        $channel->videos()->create([
             'uid' => $uid,
             'title' => $request->get('title'),
             'description' => $request->get('description'),
@@ -62,7 +67,7 @@ class VideoController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, Video $video)
+    public function destroy(Video $video)
     {
         $this->authorize('delete', $video);
 
