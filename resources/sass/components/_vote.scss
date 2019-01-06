@@ -1,0 +1,36 @@
+.vote {
+  display: flex;
+
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+
+  &__button {
+    $this: &;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &--active {
+      font-size: 1.2em;
+      color: $primary;
+
+      #{$this}__icon {
+        @extend .fas;
+      }
+    }
+  }
+
+  &__icon {
+    @extend .far;
+
+    &--up {
+      @extend .fa-thumbs-up;
+    }
+
+    &--down {
+      @extend .fa-thumbs-down;
+    }
+  }
+}

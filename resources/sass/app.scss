@@ -8,11 +8,17 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Font awesome
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+
 // Video JS
 @import '~video.js/src/css/video-js';
 
 // Components
-@import "components/video-placeholder";
+@import 'components/video-placeholder';
+@import 'components/vote';
 
 .navbar-laravel {
   background-color: #fff;

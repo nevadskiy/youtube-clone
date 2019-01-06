@@ -33,14 +33,22 @@
                 <div class="card-body">
                     <div class="d-flex mb-2">
                         <h4 class="mb-0">{{ $video->title }}</h4>
-                        <div class="ml-auto">
+                        <div class="ml-auto text-right">
                             {{ $video->viewCount() }} {{ str_plural('view', $video->viewCount()) }}
+
+                            <video-vote video-uid="{{ $video->uid }}"></video-vote>
                         </div>
                     </div>
                     <div class="media">
-                        <a href="{{ route('channels.show', $video->channel) }}">
-                            <img width="50" height="50" class="mr-3" src="{{ $video->channel->getImage() }}" alt="{{ $video->channel->name }} image">
-                        </a>
+                        <div class="d-flex align-items-center">
+                            <a href="{{ route('channels.show', $video->channel) }}">
+                                <img width="50" height="50" class="mr-3" src="{{ $video->channel->getImage() }}" alt="{{ $video->channel->name }} image">
+                            </a>
+
+                            <a href="{{ route('channels.show', $video->channel) }}">
+                                <span>{{ $video->channel->name }}</span>
+                            </a>
+                        </div>
 
                         <div class="media-body">
                         </div>

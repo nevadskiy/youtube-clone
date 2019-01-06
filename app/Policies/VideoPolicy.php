@@ -39,4 +39,22 @@ class VideoPolicy
     {
         return $user->id === $video->channel->user_id;
     }
+
+    /**
+     * @param User $user
+     * @param Video $video
+     * @return bool
+     */
+    public function vote(User $user, Video $video): bool
+    {
+        if (!$video->canBeAccessed($user)) {
+            return false;
+        }
+
+        if (!$video->isVotesAllowed()) {
+            return false;
+        }
+
+        return true;
+    }
 }
