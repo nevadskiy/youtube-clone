@@ -17,6 +17,8 @@ Route::post('/videos/{video}/views', 'VideoViewController@store');
 
 Route::get('/videos/{video}/votes', 'VideoVoteController@show')->name('votes.show');
 
+Route::get('/videos/{video}/comments', 'VideoCommentsController@index')->name('comments.index');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/upload', 'VideoUploadController@index')->name('videos-upload.index');
     Route::post('/upload', 'VideoUploadController@store')->name('videos-upload.store');
