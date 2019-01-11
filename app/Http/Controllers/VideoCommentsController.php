@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateVideoCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Video;
 
@@ -13,6 +14,21 @@ class VideoCommentsController extends Controller
             CommentResource::collection(
                 $this->getVideoCommentsWithRelations($video)
             )
+        );
+    }
+
+    public function store(CreateVideoCommentRequest $request, Video $video)
+    {
+        $this->authorize('comment', $video);
+
+        $comment = $video->comments()->create([
+            'body' => $request->get('body'),
+            'reply_id' => $request->get('reply_id', null),
+            'user_id' => $request->user()->id,
+        ]);
+
+        return response()->json(
+            CommentResource::make($comment->load(['user']))
         );
     }
 

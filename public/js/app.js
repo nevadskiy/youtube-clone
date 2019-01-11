@@ -2447,6 +2447,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     videoUid: {
@@ -2456,7 +2473,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      comments: []
+      comments: [],
+      body: ''
     };
   },
   mounted: function mounted() {
@@ -2468,6 +2486,19 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/videos/".concat(this.videoUid, "/comments")).then(function (response) {
         _this.comments = response.data;
+      });
+    },
+    createComment: function createComment() {
+      var _this2 = this;
+
+      axios.post("/videos/".concat(this.videoUid, "/comments"), {
+        body: this.body
+      }).then(function (response) {
+        _this2.comments.unshift(response.data);
+
+        _this2.body = '';
+      }).catch(function (error) {
+        console.log(error);
       });
     }
   }
@@ -95039,6 +95070,48 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _vm.$root.user.auth
+      ? _c("div", { staticClass: "video-comment" }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.body,
+                  expression: "body"
+                }
+              ],
+              staticClass: "form-control video-comment__input",
+              attrs: { placeholder: "Say something", required: "" },
+              domProps: { value: _vm.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.body = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex" }, [
+            _c("div", { staticClass: "ml-auto" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "submit" },
+                  on: { click: _vm.createComment }
+                },
+                [_vm._v("Post")]
+              )
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("p", [
       _vm._v(
         _vm._s(_vm.comments.length) +

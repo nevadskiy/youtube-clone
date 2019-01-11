@@ -1,5 +1,22 @@
 <template>
     <div>
+        <div v-if="$root.user.auth" class="video-comment">
+            <div class="form-group">
+                <textarea
+                        v-model="body"
+                        class="form-control video-comment__input"
+                        placeholder="Say something"
+                        required
+                ></textarea>
+            </div>
+
+            <div class="d-flex">
+                <div class="ml-auto">
+                    <button type="submit" class="btn btn-primary" @click="createComment">Post</button>
+                </div>
+            </div>
+        </div>
+
         <p>{{ comments.length }} {{ comments.length === 1 ? 'comment' : 'comments' }}</p>
         <ul class="list-unstyled">
             <li v-for="comment in comments" :key="comment.id" class="media">
@@ -41,6 +58,7 @@
     data() {
       return {
         comments: [],
+        body: '',
       };
     },
 
@@ -55,6 +73,19 @@
             this.comments = response.data;
           });
       },
+
+      createComment() {
+        axios.post(`/videos/${this.videoUid}/comments`, {
+          body: this.body,
+        })
+          .then((response) => {
+            this.comments.unshift(response.data);
+            this.body = '';
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   };
 </script>
