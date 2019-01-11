@@ -19,4 +19,24 @@ class ChannelPolicy
     {
         return $user->id === $channel->user_id;
     }
+
+    /***
+     * @param User $user
+     * @param Channel $channel
+     * @return bool
+     */
+    public function subscribe(User $user, Channel $channel): bool
+    {
+        return !$user->ownsChannel($channel);
+    }
+
+    /***
+     * @param User $user
+     * @param Channel $channel
+     * @return bool
+     */
+    public function unsubscribe(User $user, Channel $channel): bool
+    {
+        return !$user->isSubscribedTo($channel);
+    }
 }

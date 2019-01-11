@@ -45,12 +45,13 @@
                                 <img width="50" height="50" class="mr-3" src="{{ $video->channel->getImage() }}" alt="{{ $video->channel->name }} image">
                             </a>
 
-                            <a href="{{ route('channels.show', $video->channel) }}">
-                                <span>{{ $video->channel->name }}</span>
-                            </a>
-                        </div>
+                            <div>
+                                <a href="{{ route('channels.show', $video->channel) }}">
+                                    <span>{{ $video->channel->name }}</span>
+                                </a>
 
-                        <div class="media-body">
+                                <subscribe-button channel-slug="{{ $video->channel->slug }}"></subscribe-button>
+                            </div>
                         </div>
                     </div>
                 </div>

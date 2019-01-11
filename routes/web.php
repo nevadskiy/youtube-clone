@@ -19,6 +19,8 @@ Route::get('/videos/{video}/votes', 'VideoVoteController@show')->name('votes.sho
 
 Route::get('/videos/{video}/comments', 'VideoCommentsController@index')->name('comments.index');
 
+Route::get('/subscription/{channel}', 'ChannelSubscriptionController@show')->name('subscriptions.show');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/upload', 'VideoUploadController@index')->name('videos-upload.index');
     Route::post('/upload', 'VideoUploadController@store')->name('videos-upload.store');
@@ -37,4 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/videos/{video}/comments', 'VideoCommentsController@store')->name('comments.store');
     Route::delete('/videos/{video}/comments/{comment}', 'VideoCommentsController@destroy')->name('comments.destroy');
+
+    Route::post('/subscription/{channel}', 'ChannelSubscriptionController@store')->name('subscriptions.store');
+    Route::delete('/subscription/{channel}', 'ChannelSubscriptionController@destroy')->name('subscriptions.destroy');
 });

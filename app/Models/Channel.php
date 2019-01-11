@@ -37,4 +37,14 @@ class Channel extends Model
 
         return Storage::disk('s3')->url($this->image);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function subscriptionCount()
+    {
+        return $this->subscriptions->count();
+    }
 }
