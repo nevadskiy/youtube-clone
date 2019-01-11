@@ -8,13 +8,11 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+                    @if ($videos->count())
+                        @foreach ($videos as $video)
+                            <h3><a href="{{ route('videos.show', $video) }}">{{ $video->title }}</a></h3>
+                        @endforeach
                     @endif
-
-                    You are logged in!
                 </div>
             </div>
         </div>

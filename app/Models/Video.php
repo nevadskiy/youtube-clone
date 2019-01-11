@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
@@ -128,5 +129,20 @@ class Video extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable')->whereNull('reply_id');
+    }
+
+    public function scopeProcessed(Builder $query)
+    {
+        return $query->where('processed', true);
+    }
+
+    public function scopePublic(Builder $query)
+    {
+        return $query->where('visibility', 'public');
+    }
+
+    public function scopeVisible(Builder $query)
+    {
+        return $query->public()->processed();
     }
 }

@@ -2456,7 +2456,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     subscribeHandler: function subscribeHandler() {
-      if (!this.userSubscribed) {
+      if (this.userSubscribed) {
         this.unsubscribe();
       } else {
         this.subscribe();
