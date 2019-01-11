@@ -30,7 +30,7 @@ class VideoCommentsController extends Controller
         ]);
 
         return response()->json(
-            CommentResource::make($comment->load(['user']))
+            CommentResource::make($comment->load(['user', 'replies']))
         );
     }
 
